@@ -1,0 +1,11 @@
+# API Keys and Secrets
+*.key
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Temporary Folders
+Temporary/

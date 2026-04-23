@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NxVET Data Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Login Screen -->
+        <main id="login-view" class="view glass-panel active">
+            <div class="login-container">
+                <div class="logo-wrapper">
+                    <div class="logo-circle"></div>
+                    <h1>NxVET Portal</h1>
+                </div>
+                <p class="subtitle">Enter your API key to access your conversation data.</p>
+                <form id="login-form">
+                    <div class="input-group">
+                        <input type="password" id="api-key-input" placeholder="nxvet_sk_..." required autocomplete="off">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="login-btn">
+                        <span>Connect</span>
+                        <div class="loader hidden" id="login-loader"></div>
+                    </button>
+                    <p id="login-error" class="error-msg hidden"></p>
+                </form>
+            </div>
+        </main>
+
+        <!-- Dashboard Screen -->
+        <main id="dashboard-view" class="view hidden">
+            <nav class="sidebar glass-panel">
+                <div class="logo-wrapper small">
+                    <div class="logo-circle"></div>
+                    <h2>NxVET Portal</h2>
+                </div>
+                <div class="org-info">
+                    <p id="org-name" class="org-name">Loading...</p>
+                    <p id="user-email" class="user-email">...</p>
+                </div>
+                <ul class="nav-links">
+                    <li class="active">Conversations</li>
+                </ul>
+                <div class="sidebar-footer">
+                    <button id="logout-btn" class="btn btn-outline">Disconnect</button>
+                </div>
+            </nav>
+
+            <section class="main-content">
+                <header class="top-bar glass-panel">
+                    <h2>Conversations</h2>
+                    <button id="refresh-btn" class="btn btn-icon" aria-label="Refresh">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.59-9.21l5.25 5.25"/></svg>
+                    </button>
+                </header>
+
+                <div class="dashboard-grid">
+                    <div class="list-column glass-panel">
+                        <div id="conversations-list" class="conversations-list">
+                            <!-- Populated by JS -->
+                            <div class="empty-state">Loading conversations...</div>
+                        </div>
+                        <div class="pagination-controls hidden" id="pagination-controls">
+                            <button id="load-more-btn" class="btn btn-secondary">Load More</button>
+                        </div>
+                    </div>
+
+                    <div class="detail-column glass-panel">
+                        <div id="transcript-view" class="transcript-view hidden">
+                            <div class="transcript-header">
+                                <h3>Transcript</h3>
+                                <div class="badges">
+                                    <span id="detail-status" class="badge"></span>
+                                    <span id="detail-duration" class="badge outline"></span>
+                                </div>
+                            </div>
+                            <div id="transcript-content" class="transcript-content">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                        <div id="detail-empty-state" class="empty-state active">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="empty-icon"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                            <p>Select a conversation to view the transcript</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
