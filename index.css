@@ -294,6 +294,36 @@ input:focus {
     border-radius: var(--radius-lg);
 }
 
+.filters {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+}
+
+.filter-btn {
+    background: var(--bg-surface);
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: var(--transition-fast);
+}
+
+.filter-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+.filter-btn.active {
+    background: rgba(124, 58, 237, 0.2);
+    color: var(--accent-primary);
+    border-color: var(--accent-primary);
+}
+
 .dashboard-grid {
     display: grid;
     grid-template-columns: 350px 1fr;

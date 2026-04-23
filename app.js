@@ -4,6 +4,7 @@ let currentOrgId = null;
 let currentOffset = 0;
 const PAGE_SIZE = 20;
 let conversations = [];
+let currentFilter = 'All';
 
 // DOM Elements
 const views = {
@@ -30,6 +31,9 @@ const transcriptView = document.getElementById('transcript-view');
 const detailStatus = document.getElementById('detail-status');
 const detailDuration = document.getElementById('detail-duration');
 const transcriptContent = document.getElementById('transcript-content');
+const audioPlayer = document.getElementById('audio-player');
+const audioLoader = document.getElementById('audio-loader');
+const filterBtns = document.querySelectorAll('.filter-btn');
 
 // Init
 function init() {
@@ -105,7 +109,10 @@ async function loadConversations(reset = false) {
         convListEl.innerHTML = '<div class="empty-state">Loading...</div>';
     }
     
-    const types = ['ClinicConversation', 'NxMIC', 'AudioButtonRecording', 'DictationAudio', 'PhoneCallAudio'];
+    let types = ['ClinicConversation', 'NxMIC', 'AudioButtonRecording', 'DictationAudio', 'PhoneCallAudio', 'ButtonRecording'];
+    if (currentFilter !== 'All') {
+        types = [currentFilter];
+    }
     const typeParams = types.map(t => `types=${t}`).join('&');
     const url = `/api/organizations/${currentOrgId}/labels?${typeParams}&limit=${PAGE_SIZE}&offset=${currentOffset}&sortingProperty=FromTime&isSortingDescending=true`;
     
@@ -213,6 +220,29 @@ async function showTranscript(conv) {
     const durationMs = (conv.toTime && conv.fromTime) ? (conv.toTime - conv.fromTime) : 0;
     detailDuration.textContent = `Duration: ${formatDuration(durationMs)}`;
 
+    // Handle Audio
+    audioPlayer.style.display = 'none';
+    audioPlayer.src = '';
+    audioLoader.textContent = 'Loading audio...';
+    audioLoader.style.display = 'block';
+
+    fetch(`${API_BASE}/api/labels/${conv.id}/audio`, {
+        headers: { 'Authorization': `Bearer ${currentApiKey}` }
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('No audio');
+        return res.blob();
+    })
+    .then(blob => {
+        const url = URL.createObjectURL(blob);
+        audioPlayer.src = url;
+        audioPlayer.style.display = 'block';
+        audioLoader.style.display = 'none';
+    })
+    .catch(err => {
+        audioLoader.textContent = 'No audio recording available.';
+    });
+
     try {
         const fullLabel = await apiCall(`/api/labels/${conv.id}`);
         
@@ -294,6 +324,15 @@ loginForm.addEventListener('submit', (e) => {
 logoutBtn.addEventListener('click', logout);
 refreshBtn.addEventListener('click', () => loadConversations(true));
 loadMoreBtn.addEventListener('click', () => loadConversations(false));
+
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        currentFilter = e.target.dataset.type;
+        loadConversations(true);
+    });
+});
 
 // Start
 init();

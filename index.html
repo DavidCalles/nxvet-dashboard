@@ -57,6 +57,14 @@
                     </button>
                 </header>
 
+                <div class="filters">
+                    <button class="filter-btn active" data-type="All">All</button>
+                    <button class="filter-btn" data-type="AudioButtonRecording">Audio Button</button>
+                    <button class="filter-btn" data-type="ClinicConversation">Clinic Conv</button>
+                    <button class="filter-btn" data-type="NxMIC">NxMIC</button>
+                    <button class="filter-btn" data-type="ButtonRecording">Button</button>
+                </div>
+
                 <div class="dashboard-grid">
                     <div class="list-column glass-panel">
                         <div id="conversations-list" class="conversations-list">
@@ -76,6 +84,10 @@
                                     <span id="detail-status" class="badge"></span>
                                     <span id="detail-duration" class="badge outline"></span>
                                 </div>
+                            </div>
+                            <div class="audio-container" id="audio-container" style="padding: 0 24px;">
+                                <audio id="audio-player" controls style="width: 100%; display: none; margin-top: 16px;"></audio>
+                                <div id="audio-loader" style="display: none; font-size: 0.85rem; color: var(--text-muted); margin-top: 16px;">Loading audio...</div>
                             </div>
                             <div id="transcript-content" class="transcript-content">
                                 <!-- Populated by JS -->
